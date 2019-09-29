@@ -1,0 +1,52 @@
+@import "~bulma/sass/utilities/initial-variables";
+@import "~bulma/sass/utilities/functions";
+
+
+// override
+@import "~bulma/bulma";
+.pl-20 {
+  padding-left: 20px;
+}
+.pr-20 {
+  padding-right: 20px;
+}
+.mr-20 {
+  margin-right: 20px;
+}
+.mb-20 {
+  margin-bottom: 20px;
+}
+.mt-20 {
+  margin-top: 20px;
+}
+.wrap-form {
+  padding: 20px;
+  min-height: 100vh;
+}
+.is-justify-center {
+  justify-content: center;
+}
+.disable {
+  user-select: none;
+  cursor: not-allowed;
+  &:focus, &:active {
+    border-color: #dbdbdb;
+    box-shadow: none;
+  }
+}
+.el-submenu__title {
+  padding-right: 40px !important;
+}
+.p-20 {
+  padding: 20px;
+}
+.v-modal {
+  display: none;
+}
+.el-dialog__wrapper {
+  .el-dialog {
+    -webkit-box-shadow:0 0 5rem rgba(0, 0, 0, 0.5);
+    -moz-box-shadow:0 0 5rem rgba(0, 0, 0, 0.5);
+    box-shadow:0 0 5rem rgba(0, 0, 0, 0.5);
+  }
+}

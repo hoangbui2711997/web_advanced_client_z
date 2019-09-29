@@ -1,0 +1,20 @@
+import Vue from 'vue';
+// import { Upload, Button, Message, Menu, Submenu, MenuItemGroup, MenuItem, DropdownMenu, Dropdown, DropdownItem, Dialog, Popover } from 'element-ui';
+// import element from 'element-ui';
+import element from 'element-ui';
+Vue.use(element);
+// Vue.component(Dialog.name, Dialog);
+// Vue.component(Popover.name, Popover);
+// Vue.component(Upload.name, Upload);
+// Vue.component(Dropdown.name, Dropdown);
+// Vue.component(DropdownItem.name, DropdownItem);
+// Vue.component(Button.name, Button);
+// Vue.component(Menu.name, Menu);
+// Vue.component(Submenu.name, Submenu);
+// Vue.component(MenuItemGroup.name, MenuItemGroup);
+// Vue.component(MenuItem.name, MenuItem);
+// Vue.component(DropdownMenu.name, DropdownMenu);
+// Vue.prototype.$message = Message;
+
+// import Element from 'element-ui';
+// Vue.use(Element);
