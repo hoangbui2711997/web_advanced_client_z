@@ -28,8 +28,8 @@
         </tr>
       </template>
     </data-table>
-    <edit-user-modal :show="modal.edit.isShow" @close="modal.edit.isShow = false" :user="modal.edit.user"></edit-user-modal>
-    <add-user-modal :show="modal.add.isShow" @close="modal.add.isShow = false"></add-user-modal>
+    <edit-user-modal :show="modal.edit.isShow" @close="modal.edit.isShow = false" :user="modal.edit.user" @success="fetchData"></edit-user-modal>
+    <add-user-modal :show="modal.add.isShow" @close="modal.add.isShow = false" @success="fetchData"></add-user-modal>
     <confirm-modal
       :show="modal.del.isShow"
       :id="modal.del.id"
@@ -76,8 +76,18 @@
 			}
 		},
 		methods: {
+		  closeAllPopup () {
+        this.modal.add.isShow = false;
+        this.modal.del.isShow = false;
+        this.modal.edit.isShow = false;
+      },
       refetchData () {
+		    this.closeAllPopup();
         this.$refs.datatable.fetchData(1);
+      },
+      fetchData () {
+        this.closeAllPopup();
+        this.$refs.datatable.fetch();
       },
       handleAdd () {
         this.modal.add.isShow = true;

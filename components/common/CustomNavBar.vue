@@ -79,6 +79,8 @@
           & > a {
             color: $primary;
             cursor: pointer;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
           }
         }
       }

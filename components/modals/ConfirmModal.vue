@@ -38,16 +38,19 @@
       async handleMethod () {
         try {
           const { data: { message } } = await this.handle();
-          this.$emit('close');
           this.$message({
             type: 'success',
             message
           });
-          this.$emit('success')
+          this.onSuccess();
         } catch (e) {
           console.error(e);
         }
-      }
+      },
+      onSuccess () {
+        this.show = false;
+        this.$emit('success');
+      },
     }
   }
 </script>

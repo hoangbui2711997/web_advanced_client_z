@@ -48,9 +48,6 @@
                     {{ value }}
                   </div>
                 </div>
-                <div v-if="!_.isEmpty(notification)" class="notification is-success">
-                  {{ notification }}
-                </div>
               </div>
             </div>
           </div>
@@ -93,15 +90,23 @@
     methods: {
       async submit() {
         try {
-          const { message } = await this.addUser(this.params);
-          this.notification = message;
+          const { data: { data: { message } } } = await this.addUser(this.params);
+          this.$message({
+            type: 'success',
+            message
+          });
+          this.onSuccess();
+          // this.notification = data.data.message;
         } catch (e) {
-          console.error(e);
           this.warning = [];
           _.forEach(e.response.data.errors, (value, key) => {
             this.warning.push(_.first(value));
           })
         }
+      },
+      onSuccess () {
+        this.show = false;
+        this.$emit('success');
       },
       ...rf.getBehaviors('AdminBehavior'),
     },

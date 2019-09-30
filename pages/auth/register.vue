@@ -43,9 +43,6 @@
 							{{ value }}
 						</div>
 					</div>
-					<div v-if="!_.isEmpty(notification)" class="notification is-success">
-						{{ notification }}
-					</div>
 					<div class="field is-clearfix">
 						<input type="submit" class="button is-link is-pulled-right" value="Register" @click.prevent="submit">
 					</div>
@@ -77,7 +74,12 @@
 					const { message } = await this.$axios.$post('api/auth/signup', {
 						...this.params
 					});
-					this.notification = message;
+					this.
+					this.$message({
+						type: 'success',
+						message
+					});
+					// this.notification = message;
 				} catch (e) {
 					this.warning = [];
 					_.forEach(e.response.data.errors, (value, key) => {

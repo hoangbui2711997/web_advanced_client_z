@@ -84,12 +84,21 @@
       }
     },
     methods: {
+      onSuccess () {
+        this.show = false;
+        this.$emit('success');
+      },
       async submit () {
         try {
-          const { message } = await this.$axios.$put('api/auth/user', {
+          const { data: { message } }  = await this.$axios.$put('api/auth/user', {
             ...this.params
           });
-          this.notification = message;
+          this.$message({
+            type: 'success',
+            message
+          });
+          this.onSuccess();
+          // this.notification = message;
         } catch (e) {
           this.warning = [];
           _.forEach(e.response.data.errors, (value, key) => {
