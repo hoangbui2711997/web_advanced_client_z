@@ -1,9 +1,12 @@
 <template>
   <div class="wrap">
     <el-dropdown :hide-on-click="false" :show-timeout="100" :hide-timeout="200" v-for="data_1 in data" :key="data_1.id">
-    <div class="el-dropdown-link">
+    <div class="el-dropdown-link" v-if="!_.isEmpty(data_1.children)">
       {{ data_1.title }}<i v-if="!_.isEmpty(data_1.children)" class="el-icon-arrow-down el-icon--right"></i>
     </div>
+      <div class="el-dropdown-link" v-else>
+        <nuxt-link :to="{ name: data_1.link }">{{ data_1.title }}</nuxt-link>
+      </div>
       <el-dropdown-menu slot="dropdown" v-if="!_.isEmpty(data_1.children)">
         <div class="columns p-20">
           <div class="column parent" v-for="data_2 in data_1.children" :key="data_2.id">

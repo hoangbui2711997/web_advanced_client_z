@@ -99,9 +99,15 @@
           // this.notification = data.data.message;
         } catch (e) {
           this.warning = [];
-          _.forEach(e.response.data.errors, (value, key) => {
-            this.warning.push(_.first(value));
-          })
+          const { data } = e.response.data;
+
+          if (data.errors) {
+            _.forEach(data.errors, (value, key) => {
+              this.warning.push(_.first(value));
+            })
+          } else {
+            this.warning.push('error from server');
+          }
         }
       },
       onSuccess () {

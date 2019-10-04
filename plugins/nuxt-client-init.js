@@ -26,7 +26,7 @@ Vue.directive('resetError', {
 	// Called only once, when the directive is first bound to the element. This is where you can do one-time setup work.
 	bind (el, binding, vnode) {
 		el.addEventListener('focus', (event) => {
-			vnode.context.$data.warning = '';
+			_.set(vnode.context.$data, 'warning', []);
 		});
 	},
 	// Called after the containing component’s VNode has updated, but possibly before its children have updated.

@@ -14,7 +14,7 @@
                 <div class="field">
                   <label class="label" for="edit_name">User name</label>
                   <div class="control">
-                    <input id="edit_name" class="input" type="text" placeholder="..." v-model="params.name">
+                    <input id="edit_name" class="input" type="text" placeholder="..." v-model="params.name" v-reset-error>
                   </div>
                 </div>
                 <div class="field">
@@ -22,7 +22,7 @@
                   <div class="control">
                     <input id="edit_email" class="input" type="email" :class="{
 								'is-danger': !_.isEmpty(warning)
-							}" placeholder="e.g. yourname@gmail.com" v-model="params.email">
+							}" placeholder="e.g. yourname@gmail.com" v-model="params.email" v-reset-error>
                   </div>
                 </div>
                 <div class="field">
@@ -30,17 +30,17 @@
                   <div class="control">
                     <input id="edit_password" class="input" :class="{
 								'is-danger': !_.isEmpty(warning)
-							}" type="password" v-model="params.password">
+							}" type="password" v-model="params.password" v-reset-error>
                   </div>
                 </div>
                 <div v-if="!_.isEmpty(warning)" class="notification is-danger">
-                  <div v-for="(value, key) in this.warning" :key="key">
+                  <div v-for="(value, key) in warning" :key="key">
                     {{ value }}
                   </div>
                 </div>
-                <div v-if="!_.isEmpty(notification)" class="notification is-success">
-                  {{ notification }}
-                </div>
+<!--                <div v-if="!_.isEmpty(notification)" class="notification is-success">-->
+<!--                  {{ notification }}-->
+<!--                </div>-->
               </form>
             </div>
           </div>
@@ -98,12 +98,18 @@
             message
           });
           this.onSuccess();
-          // this.notification = message;
+          this.notification = message;
         } catch (e) {
           this.warning = [];
-          _.forEach(e.response.data.errors, (value, key) => {
-            this.warning.push(_.first(value));
-          })
+          const { data } = e.response.data;
+
+          if (data.errors) {
+            _.forEach(data.errors, (value, key) => {
+              this.warning.push(_.first(value));
+            })
+          } else {
+            this.warning.push('error from server');
+          }
         }
       },
     },
