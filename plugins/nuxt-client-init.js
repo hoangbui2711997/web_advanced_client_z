@@ -54,10 +54,10 @@ Vue.mixin({
 		async get (url, params = {}, cancelToken) {
 			try {
 				const config = {
-					params,
+					params: { ...params, ...{ debug: true } },
 					// cancelToken: cancelToken ? cancelToken.token : undefined,
 				};
-				const response = await this.$axios.$get(this.getUrlPrefix('GET') + url, config);
+				const response = await this.$axios.$get(this.getUrlPrefix() + url, config);
 				return this._responseHandler(response);
 			} catch (error) {
 				this._errorHandler(error);

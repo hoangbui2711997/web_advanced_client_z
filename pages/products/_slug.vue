@@ -17,9 +17,19 @@
 						</p>
 						<hr>
 						<span class="tag is-rounded is-medium">
-							{{ product.price }}
+							{{ _.get(v, 'price', undefined) || product.price }}
 						</span>
 					</section>
+
+					<div class="section">
+						<ProductVariation v-for="(variations, type) in product.variations"
+						                  :variations="variations"
+						                  :type="type"
+						                  :key="type"
+						                  v-model="v"
+						>
+						</ProductVariation>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -27,7 +37,9 @@
 </template>
 
 <script>
+	import ProductVariation from "../../components/products/ProductVariation";
 	export default {
+		components: {ProductVariation},
 		async asyncData ({ params, app }) {
 			let response = await app.$axios.$get(`api/products/${params.slug}`);
 
@@ -38,7 +50,11 @@
 		data () {
 			return {
 				product: null,
+				v: '',
 			}
+		},
+		methods: {
+
 		}
 	}
 </script>
