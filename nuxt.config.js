@@ -12,18 +12,21 @@ module.exports = {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'},
-      { rel: 'stylesheet', href: '/index.css' }
+      { rel: 'stylesheet', href: '/index.css' },
+      { rel: 'stylesheet', href: '/drift-basic.css' },
     ],
+    script: [
+      { src: '/Drift.js' }
+    ]
   },
   css: [
     '~assets/styles/app.scss'
   ],
   plugins: [
-    '~/plugins/element',
+    { src: '~/plugins/element', ssr: false },
     '~/plugins/i18n.js',
     { src: '~/plugins/nuxt-client-init.js' },
     { src: '~/plugins/only-client-side.js', ssr: false },
-
   ],
   env: {
 

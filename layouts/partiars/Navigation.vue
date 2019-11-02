@@ -14,12 +14,15 @@
 
 		<div id="navbarBasicExample" class="navbar-menu">
 			<div class="navbar-start">
-				<a class="navbar-item">
+				<nuxt-link :to="{ path: '/' }" class="navbar-item">
 					Home
-				</a>
-				<a class="navbar-item">
-					Documentation
-				</a>
+				</nuxt-link>
+				<nuxt-link :to="{ path: '/admin/users' }" class="navbar-item">
+					Users
+				</nuxt-link>
+				<nuxt-link :to="{ path: '/admin/products' }" class="navbar-item">
+					Products
+				</nuxt-link>
 			</div>
 			<div class="navbar-end">
 				<div class="navbar-item">
@@ -30,6 +33,9 @@
 						<nuxt-link to='/auth/login' class="button is-light">
 							Log in
 						</nuxt-link>
+						<button class="button is-light" @click="logout">
+							Log out
+						</button>
 					</div>
 				</div>
 			</div>
@@ -52,7 +58,11 @@
 			this.navbar = data;
 		},
 		methods: {
-			...rf.getBehaviors('CommonBehavior')
+			...rf.getBehaviors('CommonBehavior'),
+			logout () {
+				this.$store.dispatch('auth/logout');
+				this.$router.push('/auth/login');
+			},
 		}
 	}
 </script>

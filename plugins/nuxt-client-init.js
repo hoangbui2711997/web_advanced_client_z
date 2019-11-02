@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import _ from 'lodash';
+import BigNumber from 'bignumber.js';
 
 const instances = {};
 
@@ -48,13 +49,19 @@ Vue.mixin({
 	computed: {
 		'_' () {
 			return _;
-		}
+		},
+		'BigNumber' () {
+			return BigNumber;
+		},
 	},
 	methods: {
 		async get (url, params = {}, cancelToken) {
 			try {
 				const config = {
-					params: { ...params, ...{ debug: true } },
+					params: {
+						...params,
+						// ...{ debug: true }
+						},
 					// cancelToken: cancelToken ? cancelToken.token : undefined,
 				};
 				const response = await this.$axios.$get(this.getUrlPrefix() + url, config);

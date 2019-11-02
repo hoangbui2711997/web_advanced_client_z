@@ -1,11 +1,8 @@
 <template>
   <nav class="navbar is-transparent is-primary" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <a class="navbar-item" href="https://bulma.io">
-        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
-      </a>
-
-      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+         data-target="navbarBasicExample">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -20,15 +17,21 @@
                      params: { slug: _.get(link, 'slug', '') }
                    }"
                    :key="_.get(link, 'name')"
+                   style="max-width: 150px;
+                          text-overflow: ellipsis;
+                          overflow: hidden;
+                          white-space: nowrap;
+                          display: block;
+                          margin: auto;"
                    class="navbar-item">
-          {{ link.name }}
+          {{ link.slug }}
         </nuxt-link>
-<!--        <a class="navbar-item">-->
-<!--          Home-->
-<!--        </a>-->
-<!--        <a class="navbar-item">-->
-<!--          Documentation-->
-<!--        </a>-->
+        <!--        <a class="navbar-item">-->
+        <!--          Home-->
+        <!--        </a>-->
+        <!--        <a class="navbar-item">-->
+        <!--          Documentation-->
+        <!--        </a>-->
       </div>
       <div class="navbar-end">
         <div class="navbar-item">

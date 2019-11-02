@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<navigation></navigation>
 		<tree-navigation :tree-data="navbar"></tree-navigation>
 		<el-dropdown size="medium" split-button type="primary">
 			Medium
@@ -783,13 +782,12 @@
 
 <script>
 	import rf from '../utils/requests/RequestFactory';
-	import Navigation from "../layouts/partiars/Navigation";
 	import TreeNavigation from "../components/common/TreeNavigation";
 
 	export default {
 		async asyncData ({ app }) {
 		},
-		components: { TreeNavigation, Navigation },
+		components: { TreeNavigation },
 		data() {
 			return {
 				fileList: [{
