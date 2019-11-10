@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import _ from 'lodash';
 import BigNumber from 'bignumber.js';
+import { mapGetters } from 'vuex';
 
 const instances = {};
 
@@ -14,7 +15,7 @@ export default function ({ $axios, store, app, route, redirect }) {
 			config.headers.common['Authorization'] = store.state.auth.token;
 		} else {
 			delete config.headers.common['Authorization'];
-			redirect('/auth/login');
+			// redirect('/auth/login');
 		}
 	})
 }
@@ -46,7 +47,13 @@ Vue.directive('resetError', {
 });
 
 Vue.mixin({
+	data () {
+		return {
+			mapControls: {},
+		};
+	},
 	computed: {
+    ...mapGetters({ isAuthenticated: 'auth/isAuthenticated' }),
 		'_' () {
 			return _;
 		},

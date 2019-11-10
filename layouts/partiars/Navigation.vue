@@ -15,29 +15,26 @@
 
     <div id="navbarBasicExample" class="navbar-menu">
       <div class="navbar-start">
-        <nuxt-link :to="{ path: '/' }" class="navbar-item">
+        <button class="button is-primary custom" @click="controlGetHome" :id="`${$route.name}|control_get_home`">
           Home
-        </nuxt-link>
-        <nuxt-link :to="{ path: '/admin/users' }" class="navbar-item">
-          Users
-        </nuxt-link>
-        <nuxt-link :to="{ path: '/admin/products' }" class="navbar-item">
+        </button>
+        <button class="button is-primary custom" @click="controlGetProductsUser" :id="`${$route.name}|control_get_products_user`">
           Products
-        </nuxt-link>
+        </button>
       </div>
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <router-link to='/cart' class="button is-primary" @click="modal.cart.isShow = true">
+            <button v-if="isAuthenticated" to='/cart' class="button is-primary" @click="controlGetCart" :id="`${$route.name}|control_get_cart`">
               <strong>Cart</strong>
-            </router-link>
-            <nuxt-link to='/auth/register' class="button is-primary">
+            </button>
+            <button v-if="!isAuthenticated" class="button is-primary" @click="controlGetSignup" :id="`${$route.name}|control_register`">
               <strong>Sign up</strong>
-            </nuxt-link>
-            <nuxt-link to='/auth/login' class="button is-light">
+            </button>
+            <button v-if="!isAuthenticated" class="button is-light" @click="controlGetLogin" :id="`${$route.name}|control_get_login`">
               Log in
-            </nuxt-link>
-            <button class="button is-light" @click="logout">
+            </button>
+            <button v-if="isAuthenticated" class="button is-light" @click="controlLogout" :id="`${$route.name}|control_logout`">
               Log out
             </button>
           </div>
@@ -54,23 +51,46 @@
     name: "Navigation",
     data() {
       return {
-        navbar: [],
+        // navbar: [],
       };
     },
     async mounted() {
-      const {data} = await this.getNavigators();
-      this.navbar = data;
+      // const { data } = await this.getNavigators();
+      // this.navbar = data;
     },
     methods: {
+      controlGetCart () {
+        this.$router.push('/cart');
+      },
       ...rf.getBehaviors('CommonBehavior'),
-      logout() {
-        this.$store.dispatch('auth/logout');
+      ...rf.getBehaviors('UserBehavior'),
+      async controlLogout() {
+        const data = await this.logout();
+        if (!!data) {
+          await this.$store.dispatch('auth/logout');
+          await this.$router.push('/auth/login');
+        }
+      },
+      controlGetLogin () {
         this.$router.push('/auth/login');
+      },
+      controlGetSignup () {
+        this.$router.push('/auth/register');
+      },
+      controlGetHome () {
+        this.$router.push('/');
+      },
+      controlGetProductsUser () {
+        console.log(`asdkfhasdf`);
+        this.$router.push({ name: 'products-list' });
+
       },
     }
   }
 </script>
 
 <style scoped>
-
+  .button.is-primary.custom {
+    height: 98%;
+  }
 </style>

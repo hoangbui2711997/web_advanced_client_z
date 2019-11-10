@@ -55,7 +55,7 @@
       </template>
       <template #footer>
         <div class="field is-clearfix">
-          <input v-reset-error type="button" class="button is-link is-pulled-right is-medium" value="Register" @click="submit">
+          <input v-reset-error type="button" class="button is-link is-pulled-right is-medium" value="Register" @click="controlAdd">
         </div>
       </template>
     </modal>
@@ -88,7 +88,7 @@
       }
     },
     methods: {
-      async submit() {
+      async controlAdd() {
         try {
           const { data: { data: { message } } } = await this.addUser(this.params);
           this.$message({

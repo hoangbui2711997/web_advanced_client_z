@@ -1,5 +1,5 @@
 <template>
-  <div class="container is-fluid">
+  <div class="container is-fluid" style="height: 100vh">
     <br>
     <h1 class="is-size-3 has-text-centered">Cart</h1>
     <div class="columns">
@@ -103,6 +103,7 @@
 
   export default {
     name: "cart",
+    middleware: ['authenticated'],
     data() {
       return {
         isLoading: false,
@@ -131,7 +132,7 @@
       },
     },
     async mounted() {
-      const {data: cart} = await this.getCartsInfo();
+      const {data: cart} = await this.getCartInfo();
       console.log(cart, "cart");
       this.infoProducts = cart.products;
     },
@@ -238,6 +239,7 @@
       },
       ...rf.getBehaviors('UserBehavior'),
       ...rf.getBehaviors('ProductBehavior'),
+      ...rf.getBehaviors('CartBehavior'),
     }
   }
 </script>

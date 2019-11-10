@@ -29,7 +29,7 @@ module.exports = {
     { src: '~/plugins/only-client-side.js', ssr: false },
   ],
   env: {
-
+    host_img: 'http://localhost:8013'
   },
   router: {
     middleware: [
@@ -39,6 +39,7 @@ module.exports = {
   },
   proxy: {
     '/api/': 'http://localhost:8000',
+    '/img/': 'http://localhost:8013',
     // '/api2/': 'http://api.another-website.com'
   },
   axios: {

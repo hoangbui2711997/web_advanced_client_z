@@ -4,8 +4,8 @@
       <div class="columns">
         <div class="column is-half" style="text-align: right; border-right: thin solid #cccccc;">
           <!--          <img src="http://via.placeholder.com/628x620" alt="Product name">-->
-          <img :src="imageUrl"
-               :data-zoom="imageUrl"
+          <img :src="getProductImagePath(primary_img)"
+               :data-zoom="getProductImagePath(primary_img)"
                style="max-height: 470px; max-width: 566px; height: 470px; width: 566px; min-height: 470px; min-width: 566px; z-index: 1; position: relative;"
                @load="isLoading = false"
                ref="image"
@@ -14,14 +14,14 @@
           <div v-if="!!variations[index] && !!variations[index].images">
             <ul style="text-align: left; position: absolute; top: 38px; left: -26px; max-height: 560px; overflow-y: auto;">
               <li>
-                <img :src="variations[index].image_url" :alt="variations[index].description"
-                     :class="{ 'border-red': $refs.image && ($refs.image.src === variations[index].image_url) }"
-                     style="height: 64px; width: 64px; cursor: pointer;" @click="changeImage($refs.image.src=variations[index].image_url, isLoading = true)">
+                <img :src="getProductImagePath(variations[index].image_url)" :alt="variations[index].description"
+                     :class="{ 'border-red': $refs.image && ($refs.image.src === getProductImagePath(variations[index].image_url)) }"
+                     style="height: 64px; width: 64px; cursor: pointer;" @click="changeImage($refs.image.src=getProductImagePath(primary_img = variations[index].image_url), isLoading = true)">
               </li>
               <li v-for="image in variations[index].images" :key="image.id">
-                <img :src="image.image_url" :alt="image.description"
-                     :class="{ 'border-red': $refs.image && ($refs.image.src === image.image_url) }"
-                     style="height: 64px; width: 64px; cursor: pointer;" @click="changeImage($refs.image.src=image.image_url, isLoading = true)">
+                <img :src="getProductImagePath(image.image_url)" :alt="image.description"
+                     :class="{ 'border-red': $refs.image && ($refs.image.src === getProductImagePath(image.image_url)) }"
+                     style="height: 64px; width: 64px; cursor: pointer;" @click="changeImage($refs.image.src=getProductImagePath(primary_img = image.image_url), isLoading = true)">
               </li>
             </ul>
           </div>
@@ -30,7 +30,7 @@
           <el-carousel ref="carousel" type="card" height="125px" :autoplay="false" style="width: 70%; margin: auto;"
                        @change="changeSlide">
             <el-carousel-item v-for="variation in variations" :key="variation.id">
-              <h4 class="medium" :style="`background-image: url('${variation.image_url}')`"
+              <h4 class="medium" :style="`background-image: url('${getProductImagePath(variation.image_url)}')`"
                   style="height: 100%; background-size: cover;">
                 <!--                {{ variation.description }}-->
               </h4>
@@ -239,18 +239,22 @@
   // import ProductVariation from "../../components/products/ProductVariation";
   import rf from '../../utils/requests/RequestFactory';
   import _ from 'lodash';
+  import Utils from "../../utils/Utils";
 
   export default {
     // components: {ProductVariation},
     async asyncData({params, app}) {
-      let response = await app.$axios.$get(`api/products/${params.slug}`);
+      let response = await rf.getBehaviors('ProductBehavior', app.$axios).getProduct(params.slug);
+      // let response = await app.$axios.$get(`api/product/${params.slug}`);
       return {
         product: response.data,
+        primary_img: response.data.image_url || '',
         activeName: 'first',
       }
     },
     data() {
       return {
+        primary_img: '',
         isLoading: false,
         cart: {},
         index: 0,
@@ -384,8 +388,12 @@
       },
       imageUrl() {
         if (this.variations.length > this.index) {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          this.primary_img = this.variations[this.index].image_url;
           return this.variations[this.index].image_url;
         } else {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          this.primary_img = this.product.image_url;
           return this.product.image_url;
         }
       },
@@ -402,6 +410,9 @@
       this.initParams();
     },
     methods: {
+      getProductImagePath (name) {
+        return Utils.getProductImagePath(name);
+      },
       add () {
         this.addToCart(this.cart);
       },
@@ -435,6 +446,7 @@
       changeSlide(newIndex) {
         this.index = newIndex;
         const variation = this.variations[this.index];
+        this.primary_img = variation.image_url;
 
         this.$set(this.params, 'type', variation.type);
         this.$set(this.params, 'color', variation.color);
@@ -444,6 +456,7 @@
       },
       ...rf.getBehaviors('UserBehavior'),
       ...rf.getBehaviors('ProductBehavior'),
+      ...rf.getBehaviors('CartBehavior'),
     }
   }
 </script>

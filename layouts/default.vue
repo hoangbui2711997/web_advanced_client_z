@@ -32,7 +32,7 @@
   import Navigation from './partiars/Navigation';
 
   export default {
-    components: { Navigation }
+    components: { Navigation },
   }
 </script>
 

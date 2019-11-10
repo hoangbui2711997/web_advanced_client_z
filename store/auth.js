@@ -15,13 +15,19 @@ export const mutations = {
   }
 };
 
+export const getters = {
+  isAuthenticated (state) {
+    return !!state.token;
+  }
+};
+
 export const actions = {
   initAuth ({ dispatch, state, commit }, credential) {
     return new Promise(resolve => {
       const { access_token } = credential;
       commit('setToken', "Bearer " + access_token);
       dispatch('saveToken', credential);
-      Cookie.set('token', state.token)
+      Cookie.set('token', state.token);
       resolve(state.token || {});
     })
   },
