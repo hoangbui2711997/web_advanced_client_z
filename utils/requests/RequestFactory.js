@@ -2,12 +2,14 @@ import AdminBehavior from "~/utils/requests/AdminBehavior";
 import UserBehavior from "~/utils/requests/UserBehavior";
 import TestBehavior from "~/utils/requests/TestBehavior";
 import CommonBehavior from "~/utils/requests/CommonBehavior";
+import ProductBehavior from "~/utils/requests/ProductBehavior";
 
 const requestMap = {
   AdminBehavior,
   UserBehavior,
   TestBehavior,
-  CommonBehavior
+  CommonBehavior,
+  ProductBehavior
 };
 
 export default class RequestFactory {

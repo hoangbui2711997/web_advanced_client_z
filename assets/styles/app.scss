@@ -75,3 +75,14 @@ body > div.el-picker-panel.el-date-picker.el-popper.has-sidebar > div.el-picker-
     text-align: center;
   }
 }
+
+.is-ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  display: block;
+}
+
+.scroll-content {
+  min-height: 100vh;
+}

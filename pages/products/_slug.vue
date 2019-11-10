@@ -119,7 +119,7 @@
                     v-for="variation in productExtra.variations || []"
                     :key="variation.id"
                     :label="`${variation.amount} ${productExtra.unit.unit} - ${variation.price}$`"
-                    :value="variation.price">
+                    :value="{ id: variation.id, price: variation.price }">
                   </el-option>
                 </el-select>
               </div>
@@ -161,7 +161,7 @@
                          Points are valid for 1 year.">
                 <el-button slot="reference">?</el-button>
               </el-popover>
-              <el-button type="primary" class="is-pulled-right">Add to card</el-button>
+              <el-button type="primary" class="is-pulled-right" @click="add">Add to card</el-button>
             </div>
           </section>
         </div>
@@ -326,18 +326,20 @@
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.cart = {};
         if (this._.isArray(this.variations) && !this._.isEmpty(this.variations)) {
-          total = total.plus(new BigNumber(this._.get(this.variations[this.index], 'price', 0)));
+          const variation = this.variations[this.index];
+          total = total.plus(new BigNumber(this._.get(variation, 'price', 0)));
           // key: table, value: id
-          this._.set(this.cart, 'product_variations', this.variations[this.index].id);
-          const vase = this._.get(this.params, 'vase', 0);
-          if (!!vase) {
+          this._.set(this.cart, 'product_variations', variation.id);
+          const vase = this._.get(this.params, 'vase', `${variation.price}_${variation.id}_${variation.size}`);
+          console.log(vase, "vase");
+          if (!!variation && !!variation.vase && this._.isEmpty(variation.vase.variations)) {
+            total = total.plus(new BigNumber(variation.vase.price));
+            this._.set(this.cart, 'vases', variation.vase.id);
+          } else {
             const vasePrice = this._.first(vase.split('_'));
             const vaseId = vase.split('_')[1];
             total = total.plus(new BigNumber(vasePrice));
-            this._.set(this.cart, 'vase', vaseId);
-          } else if (!!this.variations[this.index] && !!this.variations[this.index].vase) {
-            total = total.plus(new BigNumber(this.variations[this.index].vase.price));
-            this._.set(this.cart, 'vase', this.variations[this.index].vase.id);
+            this._.set(this.cart, 'vase_variations', vaseId);
           }
         } else {
           total = total.plus(this._.get(this.product, 'price', 0));
@@ -347,8 +349,8 @@
         const idExtras = [];
         if (!!this.params.extra) {
           this._.forEach(Object.keys(this.params.extra), (k) => {
-            total = total.plus(new BigNumber(this._.get(this.params.extra, k, 0)));
-            idExtras.push(k);
+            total = total.plus(new BigNumber(this._.get(this.params.extra[k], 'price', 0)));
+            idExtras.push(this._.get(this.params.extra[k], 'id', 0));
           });
 
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -366,12 +368,6 @@
       },
       variations() {
         return this.product.variations || [];
-      },
-      manufactory() {
-        return this.product.manufactory || {};
-      },
-      category() {
-        return this.product.category || {};
       },
       discount() {
         return this.product.discount || {};
@@ -406,6 +402,9 @@
       this.initParams();
     },
     methods: {
+      add () {
+        this.addToCart(this.cart);
+      },
       initParams () {
         this.$nextTick(() => {
           this.setCarouselIndex(this.index);
@@ -444,6 +443,7 @@
         this.$refs.carousel.setActiveItem(index);
       },
       ...rf.getBehaviors('UserBehavior'),
+      ...rf.getBehaviors('ProductBehavior'),
     }
   }
 </script>
