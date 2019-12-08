@@ -65,7 +65,7 @@
 		methods: {
 			async submit () {
 				try {
-					const { data: credential  } = await this.login(this.params);
+					const { data: credential } = await this.login(this.params);
 					const token = await this.$store.dispatch('auth/initAuth', credential);
 					if (token) {
 						this.$axios.defaults.headers.common['Authorization'] = token;

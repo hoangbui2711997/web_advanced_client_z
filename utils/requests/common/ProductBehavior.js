@@ -4,17 +4,17 @@ export default {
   },
 
   getProducts (params) {
-    const url = `${this.innerPrefix()}/list`;
+    const url = '/common/product/list';
     return this.get(url, params);
   },
 
   getProduct (slug) {
-    const url = `${this.innerPrefix()}/${slug}`;
+    const url = `/common/product/${slug}`;
     return this.get(url);
   },
 
   getZipcode (id) {
-    const url = `${this.innerPrefix()}/zipcode/${id}`;
+    const url = `/common/product/zipcode/${id}`;
     return this.get(url);
   },
 }

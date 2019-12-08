@@ -3,7 +3,8 @@ const { DateTime } = require('luxon');
 const Cookie = process.client ? require('js-cookie') : undefined;
 
 export const state = () => ({
-  token: ''
+  token: '',
+  balance: 0,
 });
 
 export const mutations = {
@@ -18,7 +19,10 @@ export const mutations = {
 export const getters = {
   isAuthenticated (state) {
     return !!state.token;
-  }
+  },
+  getToken (state) {
+    return state.token;
+  },
 };
 
 export const actions = {

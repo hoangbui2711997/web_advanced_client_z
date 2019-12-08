@@ -25,7 +25,10 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <button v-if="isAuthenticated" to='/cart' class="button is-primary" @click="controlGetCart" :id="`${$route.name}|control_get_cart`">
+            <div v-if="isAuthenticated" style="margin-bottom: 9px; border-right: solid thin; padding-right: 20px;">
+              Your Balance is {{ getBalance }}
+            </div>
+            <button v-if="isAuthenticated" class="button is-primary" @click="controlGetCart" :id="`${$route.name}|control_get_cart`">
               <strong>Cart</strong>
             </button>
             <button v-if="!isAuthenticated" class="button is-primary" @click="controlGetSignup" :id="`${$route.name}|control_register`">
@@ -46,6 +49,7 @@
 
 <script>
   import rf from '../../utils/requests/RequestFactory';
+  import { mapGetters } from 'vuex';
 
   export default {
     name: "Navigation",
@@ -58,9 +62,12 @@
       // const { data } = await this.getNavigators();
       // this.navbar = data;
     },
+    computed: {
+      ...mapGetters(['getBalance']),
+    },
     methods: {
       controlGetCart () {
-        this.$router.push('/cart');
+        this.$router.push({ name: 'user-checkout-cart' });
       },
       ...rf.getBehaviors('CommonBehavior'),
       ...rf.getBehaviors('UserBehavior'),

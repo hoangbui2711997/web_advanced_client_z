@@ -4,17 +4,17 @@ export default {
   },
 
   requestResetPassword (params) {
-    const url = `${this.innerPrefix()}/create`;
+    const url = '/user/password/create';
     return this.post(url, params);
   },
 
   activeResetPassword (token) {
-    const url = `${this.innerPrefix()}/find/${token}`;
+    const url = `/user/password/find/${token}`;
     return this.get(url);
   },
 
   resetPassword (params) {
-    const url = `${this.innerPrefix()}/reset`;
+    const url = '/user/password/reset';
     return this.post(url, params);
   },
 }

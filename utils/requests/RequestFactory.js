@@ -1,9 +1,12 @@
 import UserBehavior from "~/utils/requests/UserBehavior";
 import CommonBehavior from "~/utils/requests/CommonBehavior";
 import ProductBehavior from "~/utils/requests/common/ProductBehavior";
-import CartBehavior from "~/utils/requests/user/CartBehavior";
+import ProgramBehavior from "~/utils/requests/common/ProgramBehavior";
+import CartBehavior from "~/utils/requests/user/checkout/CartBehavior";
 import InfoBehavior from "~/utils/requests/user/InfoBehavior";
 import PasswordBehavior from "~/utils/requests/user/PasswordBehavior";
+import ChatBehavior from "~/utils/requests/user/ChatBehavior";
+import qs from 'qs';
 
 const requestMap = {
   UserBehavior,
@@ -12,6 +15,8 @@ const requestMap = {
   CartBehavior,
   InfoBehavior,
   PasswordBehavior,
+  ProgramBehavior,
+  ChatBehavior,
 };
 
 export default class RequestFactory {
@@ -32,14 +37,19 @@ export default class RequestFactory {
   }
 
   static async get (url, params = {}, cancelToken) {
+    console.log(`get from server`);
     try {
       const config = {
         params: {
           ...params,
           // ...{ debug: true }
         },
+        paramsSerializer: params => {
+          return qs.stringify(params)
+        },
         // cancelToken: cancelToken ? cancelToken.token : undefined,
       };
+      console.log(config, "config");
       const response = await RequestFactory.$axios.$get(RequestFactory.getUrlPrefix() + url, config);
       return RequestFactory._responseHandler(response);
     } catch (error) {
@@ -79,6 +89,11 @@ export default class RequestFactory {
     // await RequestFactory._checkMasterdataVersion(data);
     // console.log(response, "response");
     console.log(`done`);
+    console.log(response);
+    console.log(response);
+    if (!!response.data && !!response.data.original) {
+      return response.data.original;
+    }
     return response;
   }
 
@@ -101,6 +116,9 @@ export default class RequestFactory {
     //   window.location.reload();
     // }
     console.log(`err`);
+    if (!err.original) {
+      return err.original.message;
+    }
     throw err;
   }
 

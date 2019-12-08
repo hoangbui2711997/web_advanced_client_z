@@ -2,6 +2,32 @@ import Vue from 'vue';
 import _ from 'lodash';
 import BigNumber from 'bignumber.js';
 import { mapGetters } from 'vuex';
+import vClickOutside from 'v-click-outside';
+import Dropdown from "~/components/dropdown/Dropdown";
+import DropdownMenu from "~/components/dropdown/DropdownMenu";
+import DropdownItem from "~/components/dropdown/DropdownItem";
+import InfiniteLoading from 'vue-infinite-loading';
+import VeeValidate, { Validator } from 'vee-validate';
+import qs from 'qs';
+
+Vue.component('dropdown', Dropdown);
+Vue.component('dropdown-menu', DropdownMenu);
+Vue.component('dropdown-item', DropdownItem);
+Vue.use(vClickOutside);
+Vue.use(VeeValidate);
+Vue.use(InfiniteLoading, {
+  props: {
+    spinner: 'default',
+    /* other props need to configure */
+  },
+  system: {
+    throttleLimit: 1000,
+    /* other settings need to configure */
+  },
+  slots: {
+    noMore: 'No more data',
+  }
+});
 
 const instances = {};
 
@@ -62,15 +88,36 @@ Vue.mixin({
 		},
 	},
 	methods: {
+	  showError (message) {
+      this.$message({
+        type: 'error',
+        message
+      });
+    },
+    success (message) {
+      this.$message({
+        type: 'success',
+        message
+      });
+    },
+    resetErrors () {
+      this.errors.clear();
+    },
 		async get (url, params = {}, cancelToken) {
+		  console.log(`get from client`);
 			try {
 				const config = {
 					params: {
 						...params,
 						// ...{ debug: true }
 						},
+          paramsSerializer: params => {
+            return qs.stringify(params)
+          },
 					// cancelToken: cancelToken ? cancelToken.token : undefined,
 				};
+
+
 				const response = await this.$axios.$get(this.getUrlPrefix() + url, config);
 				return this._responseHandler(response);
 			} catch (error) {
@@ -105,7 +152,10 @@ Vue.mixin({
 			// const data = response.data;
 			// await this._checkMasterdataVersion(data);
 			// console.log(response, "response");
-			return response;
+      if (!!response.data && !!response.data.original) {
+        return response.data.original;
+      }
+      return response;
 		},
 		// async _checkMasterdataVersion (data) {
 		//   if (MasterdataUtils.isDataChanged(data.dataVersion)) {
@@ -125,10 +175,27 @@ Vue.mixin({
 			// if (err.response && err.response.status === 503) { // maintenance
 			//   window.location.reload();
 			// }
+      if (!!err.data && !!err.data.original) {
+        return err.data.original.message;
+      }
 			throw err;
 		},
 		getUrlPrefix () {
 			return '/api';
 		},
-	}
+	},
+  filters: {
+	  div (a, b) {
+	    return new BigNumber(a).div(new BigNumber(b)).toString();
+    },
+    mul (a, b) {
+      return new BigNumber(a).times(new BigNumber(b)).toString();
+    },
+    minus (a, b) {
+      return new BigNumber(a).minus(new BigNumber(b)).toString();
+    },
+    plus (a, b) {
+      return new BigNumber(a).plus(new BigNumber(b)).toString();
+    },
+  }
 });

@@ -10,8 +10,8 @@
         <custom-el-menu-item
           :data="child"
           v-for="child in data.children"
-          :key="child.id"
-          :index="`${index}-${data.order}-${child.id}`"
+          :key="_.get(child, 'id', '')"
+          :index="`${index}-${data.order}-${_.get(child, 'id', '')}`"
           :level="level + 1"
         >
         </custom-el-menu-item>

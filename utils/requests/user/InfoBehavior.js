@@ -4,12 +4,12 @@ export default {
   },
 
   getUserInfo () {
-    const url = `${this.innerPrefix()}`;
+    const url = '/user/info';
     return this.get(url);
   },
 
   updateUserInfo (params) {
-    const url = `${this.innerPrefix()}/update`;
+    const url = '/user/info/update';
     return this.post(url, params);
   },
 }

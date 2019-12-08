@@ -49,7 +49,7 @@
                 <span class="demonstration">Rate</span>
               </div>
               <div class="column f-end text-end" style="height: 46px; text-align: end; white-space: nowrap;">
-                <el-rate v-if="!!product.variations[index]" v-model="product.variations[index].rate" disabled show-score
+                <el-rate v-if="!!product.variations && !!product.variations[index]" v-model="product.variations[index].rate" disabled show-score
                          score-template="{value} points"></el-rate>
                 <el-rate v-else v-model="product.rate" disabled show-score
                          score-template="{value} points"></el-rate>
@@ -119,22 +119,9 @@
                     v-for="variation in productExtra.variations || []"
                     :key="variation.id"
                     :label="`${variation.amount} ${productExtra.unit.unit} - ${variation.price}$`"
-                    :value="{ id: variation.id, price: variation.price }">
+                    :value="JSON.stringify({ id: variation.id, price: variation.price })">
                   </el-option>
                 </el-select>
-              </div>
-            </div>
-            <div class="deliver-info is-clearfix">
-              <div class="block">
-                <el-input placeholder="Zipcode input" style="width: 180px;" class="is-pulled-left"
-                          v-model.lazy="params.zip_code" clearable></el-input>
-                <el-date-picker
-                  v-model="params.deliver_date"
-                  type="date"
-                  class="is-pulled-right"
-                  placeholder="Pick a day to deliver"
-                  :picker-options="pickerOptions">
-                </el-date-picker>
               </div>
             </div>
             <div style="margin-top: 10px; font-size: 14px;">
@@ -352,9 +339,11 @@
 
         const idExtras = [];
         if (!!this.params.extra) {
+
           this._.forEach(Object.keys(this.params.extra), (k) => {
-            total = total.plus(new BigNumber(this._.get(this.params.extra[k], 'price', 0)));
-            idExtras.push(this._.get(this.params.extra[k], 'id', 0));
+            const extraElement = JSON.parse(this.params.extra[k]);
+            total = total.plus(new BigNumber(this._.get(extraElement, 'price', 0)));
+            idExtras.push(this._.get(extraElement, 'id', 0));
           });
 
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -414,6 +403,10 @@
         return Utils.getProductImagePath(name);
       },
       add () {
+        if (!this.isAuthenticated) {
+          this.$router.push({ name: 'auth-login' });
+          return;
+        }
         this.addToCart(this.cart);
       },
       initParams () {
