@@ -48,7 +48,7 @@
       </template>
       <template #footer>
         <div class="field is-clearfix">
-          <input type="submit" class="button is-link is-pulled-right is-medium" value="Submit" @click.prevent="submit">
+          <input type="submit" class="button is-link is-pulled-right is-medium" value="Submit" @click.prevent="controlEdit">
         </div>
       </template>
     </modal>
@@ -88,7 +88,7 @@
         this.show = false;
         this.$emit('success');
       },
-      async submit () {
+      async controlEdit () {
         try {
           const { data: { message } }  = await this.$axios.$put('api/auth/user', {
             ...this.params

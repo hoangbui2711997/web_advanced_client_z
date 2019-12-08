@@ -53,14 +53,11 @@
 </template>
 
 <script>
+  import rf from "../../utils/requests/RequestFactory";
+
 	export default {
 		name: "Register",
 		middleware: 'not_authenticated',
-		// computed: {
-		// 	'_' () {
-		// 		return _;
-		// 	}
-		// },
 		data () {
 			return {
 				params: {},
@@ -71,10 +68,7 @@
 		methods: {
 			async submit () {
 				try {
-					const { message } = await this.$axios.$post('api/auth/signup', {
-						...this.params
-					});
-					this.
+					const { message } = await this.signup(this.params);
 					this.$message({
 						type: 'success',
 						message
@@ -87,6 +81,7 @@
 					})
 				}
 			},
+      ...rf.getBehaviors('UserBehavior'),
 		}
 	}
 </script>

@@ -36,5 +36,8 @@
 </script>
 
 <style scoped>
-
+  .modal {
+    justify-content: normal;
+    padding-top: 40px;
+  }
 </style>

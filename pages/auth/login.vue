@@ -46,6 +46,8 @@
 </template>
 
 <script>
+  import rf from "../../utils/requests/RequestFactory";
+
 	export default {
 		name: "Login",
 		middleware: 'not_authenticated',
@@ -63,16 +65,17 @@
 		methods: {
 			async submit () {
 				try {
-					const { data: credential  } = await this.post('/auth/login', { ...this.params });
+					const { data: credential } = await this.login(this.params);
 					const token = await this.$store.dispatch('auth/initAuth', credential);
 					if (token) {
 						this.$axios.defaults.headers.common['Authorization'] = token;
 					}
-					this.$router.push('/admin/users');
+					await this.$router.push('/');
 				} catch (e) {
 					console.error(e);
 				}
 			},
+      ...rf.getBehaviors('UserBehavior'),
 		}
 	}
 </script>

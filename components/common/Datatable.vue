@@ -33,7 +33,7 @@
 			</template>
 			</tbody>
 		</table>
-		<template>
+		<template v-if="!emptyData">
 			<div class="wrap-footer mt-20">
 <!--				<div v-if="displayMessage && !emptyData" :class="{'message-white-bottom': displayMessage && totalRecord <= 10}" class="table-footer">-->
 <!--					<div class="display-result">{{ getMessagePage }}</div>-->
