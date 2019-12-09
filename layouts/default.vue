@@ -48,6 +48,23 @@
       </el-drawer>
     </div>
     <div class="footer">
+      <div class="buttons">
+        <div v-if="isAuthenticated" style="margin-bottom: 9px; border-right: solid thin; padding-right: 20px;">
+          Your Balance is {{ getBalance }}
+        </div>
+        <button v-if="isAuthenticated" class="button is-primary" @click="controlGetCart" :id="`${$route.name}|control_get_cart`">
+          <strong>Cart</strong>
+        </button>
+        <button v-if="!isAuthenticated" class="button is-primary" @click="controlGetSignup" :id="`${$route.name}|control_register`">
+          <strong>Sign up</strong>
+        </button>
+        <button v-if="!isAuthenticated" class="button is-light" @click="controlGetLogin" :id="`${$route.name}|control_get_login`">
+          Log in
+        </button>
+        <button v-if="isAuthenticated" class="button is-light" @click="controlLogout" :id="`${$route.name}|control_logout`">
+          Log out
+        </button>
+      </div>
       <div class="link is-info">
         Made by Hoang Bui
       </div>
@@ -105,6 +122,32 @@
       },
     },
     methods: {
+      controlGetCart () {
+        this.$router.push({ name: 'user-checkout-cart' });
+      },
+      ...rf.getBehaviors('CommonBehavior'),
+      ...rf.getBehaviors('UserBehavior'),
+      async controlLogout() {
+        const data = await this.logout();
+        if (!!data) {
+          await this.$store.dispatch('auth/logout');
+          await this.$router.push('/auth/login');
+        }
+      },
+      controlGetLogin () {
+        this.$router.push('/auth/login');
+      },
+      controlGetSignup () {
+        this.$router.push('/auth/register');
+      },
+      controlGetHome () {
+        this.$router.push('/');
+      },
+      controlGetProductsUser () {
+        console.log(`asdkfhasdf`);
+        this.$router.push({ name: 'products-list' });
+
+      },
       async sendMessageHandle () {
         try {
           if (this.isSending) {
