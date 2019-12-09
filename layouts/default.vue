@@ -45,6 +45,7 @@
                @keyup.enter="sendMessageHandle"
                v-model="message"
         >
+        <button class="button is-primary" @click="sendMessageHandle">Send</button>
       </el-drawer>
     </div>
     <div class="footer">
