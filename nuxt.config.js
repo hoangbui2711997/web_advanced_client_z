@@ -30,7 +30,8 @@ module.exports = {
   ],
   env: {
     host_img: 'http://localhost:8013',
-    socket_url: 'http://localhost:6001'
+    // socket_url: 'http://localhost:6001',
+    socket_url: 'http://ec2-3-15-196-95.us-east-2.compute.amazonaws.com:6001',
   },
   router: {
     middleware: [
@@ -41,7 +42,8 @@ module.exports = {
   proxy: {
     '/api/': 'http://localhost:8000',
     '/img/': 'http://localhost:8013',
-    '/socket/': 'http://localhost:6001'
+    '/socket/': 'http://ec2-3-15-196-95.us-east-2.compute.amazonaws.com:6001',
+    // '/socket/': 'http://localhost:6001'
     // '/api2/': 'http://api.another-website.com'
   },
   axios: {

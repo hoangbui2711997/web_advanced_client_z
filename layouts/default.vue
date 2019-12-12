@@ -114,6 +114,7 @@
         }
       },
       isAuthenticated (value) {
+        console.log(value, 'value');
         if (value) {
           window.Echo.connector.options.auth.headers['Authorization'] = this.getToken;
           this.listenChatConversation(this.getConversationId);
@@ -189,6 +190,7 @@
         return 'App.Chat.Conservation.'
       },
       listenChatConversation(id) {
+        console.log('@listenChatConversation');
         window.Echo.private(`${this.innerPrefix()}${id}`)
           .listen('MessageSent', (data) => {
             console.log(data, "data");
@@ -198,6 +200,15 @@
             params.message = data.message;
 
             this.conversation.unshift(params);
+          })
+          .here((users) => {
+            console.log("here");
+          })
+          .joining((user) => {
+            console.log("joining");
+          })
+          .leaving((user) => {
+            console.log("leaving");
           });
       },
       getMessages: rf.getBehaviors('ChatBehavior').getMessages,
