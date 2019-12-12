@@ -29,8 +29,8 @@ module.exports = {
     { src: '~/plugins/only-client-side.js', ssr: false },
   ],
   env: {
-    host_img: 'http://localhost:8013',
-    socket_url: 'http://localhost:6001'
+    host_img: 'http://ec2-3-15-196-95.us-east-2.compute.amazonaws.com:8013',
+    socket_url: 'http://ec2-52-68-200-45.ap-northeast-1.compute.amazonaws.com:6001'
   },
   router: {
     middleware: [
@@ -39,12 +39,12 @@ module.exports = {
     ]
   },
   proxy: {
-    // '/api/': 'http://ec2-3-134-107-193.us-east-2.compute.amazonaws.com:8000',
-    // '/img/': 'http://ec2-3-15-196-95.us-east-2.compute.amazonaws.com:8013',
+    '/api/': 'http://ec2-52-68-200-45.ap-northeast-1.compute.amazonaws.com:8000',
+    '/img/': 'http://ec2-3-15-196-95.us-east-2.compute.amazonaws.com:8013',
     // '/socket/': 'http://ec2-3-15-196-95.us-east-2.compute.amazonaws.com:6001',
-    '/api/': 'http://localhost:8000',
-    '/img/': 'http://localhost:8013',
-    '/socket/': 'http://localhost:6001'
+    // '/api/': 'http://localhost:8000',
+    // '/img/': 'http://localhost:8013',
+    '/socket/': 'http://ec2-52-68-200-45.ap-northeast-1.compute.amazonaws.com:6001'
     // '/api2/': 'http://api.another-website.com'
   },
   axios: {

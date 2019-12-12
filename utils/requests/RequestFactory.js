@@ -32,7 +32,7 @@ export default class RequestFactory {
 
       return {get: RequestFactory.get, put: RequestFactory.put, post: RequestFactory.post, del: RequestFactory.del, ...requestMap[requestName] };
     }
-
+    console.log($axios, 'client_____');
     return requestMap[requestName];
   }
 
