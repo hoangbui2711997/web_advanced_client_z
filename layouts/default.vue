@@ -113,15 +113,24 @@
           this.conversation.push(...data.data);
         }
       },
-      isAuthenticated (value) {
-        console.log(value, 'value');
-        if (value) {
+      // isAuthenticated (value) {
+      //   if (value) {
+      //     console.log('____________is authenticated');
+      //     window.Echo.connector.options.auth.headers['Authorization'] = this.getToken;
+      //     this.listenChatConversation(this.getConversationId);
+      //   } else {
+      //     console.log('is unauthenticated _______________');
+      //     window.Echo.leave(`${this.innerPrefix()}${id}`);
+      //   }
+      // },
+    },
+    mounted () {
+      if (this.isAuthenticated) {
           window.Echo.connector.options.auth.headers['Authorization'] = this.getToken;
           this.listenChatConversation(this.getConversationId);
-        } else {
-          window.Echo.leave(`${this.innerPrefix()}${id}`);
-        }
-      },
+      } else {
+        window.Echo.leave(`${this.innerPrefix()}${id}`);
+      }
     },
     methods: {
       controlGetCart () {
@@ -190,7 +199,6 @@
         return 'App.Chat.Conservation.'
       },
       listenChatConversation(id) {
-        console.log('@listenChatConversation');
         window.Echo.private(`${this.innerPrefix()}${id}`)
           .listen('MessageSent', (data) => {
             console.log(data, "data");
@@ -200,16 +208,16 @@
             params.message = data.message;
 
             this.conversation.unshift(params);
-          })
-          .here((users) => {
-            console.log("here");
-          })
-          .joining((user) => {
-            console.log("joining");
-          })
-          .leaving((user) => {
-            console.log("leaving");
           });
+          // .here((users) => {
+          //   console.log("here");
+          // })
+          // .joining((user) => {
+          //   console.log("joining");
+          // })
+          // .leaving((user) => {
+          //   console.log("leaving");
+          // });
       },
       getMessages: rf.getBehaviors('ChatBehavior').getMessages,
       sendMessage: rf.getBehaviors('ChatBehavior').sendMessage,

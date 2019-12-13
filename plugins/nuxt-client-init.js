@@ -79,7 +79,7 @@ Vue.mixin({
 		};
 	},
 	computed: {
-    ...mapGetters({ isAuthenticated: 'auth/isAuthenticated' }),
+    ...mapGetters({ isAuthenticated: 'auth/isAuthenticated', getBalance: 'getBalance' }),
 		'_' () {
 			return _;
 		},
