@@ -3,7 +3,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'web_advenced_client',
+    title: 'web_advanced_client',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -29,8 +29,8 @@ module.exports = {
     { src: '~/plugins/only-client-side.js', ssr: false },
   ],
   env: {
-    host_img: 'http://ec2-52-194-184-136.ap-northeast-1.compute.amazonaws.com:8013',
-    socket_url: 'http://ec2-52-194-184-136.ap-northeast-1.compute.amazonaws.com:6001'
+    host_img: 'http://localhost:8013',
+    socket_url: 'http://localhost:6001'
   },
   router: {
     middleware: [
@@ -39,12 +39,9 @@ module.exports = {
     ]
   },
   proxy: {
-    '/api/': 'http://ec2-52-194-184-136.ap-northeast-1.compute.amazonaws.com:8000',
-    '/img/': 'http://ec2-52-194-184-136.ap-northeast-1.compute.amazonaws.com:8013',
-    // '/socket/': 'http://ec2-52-194-184-136.ap-northeast-1.compute.amazonaws.com:6001',
-    // '/api/': 'http://localhost:8000',
-    // '/img/': 'http://localhost:8013',
-    '/socket/': 'http://ec2-52-194-184-136.ap-northeast-1.compute.amazonaws.com:6001'
+    '/api/': 'http://localhost:8000',
+    '/img/': 'http://localhost:8013',
+    '/socket/': 'http://localhost:6001'
     // '/api2/': 'http://api.another-website.com'
   },
   axios: {

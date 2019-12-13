@@ -50,7 +50,6 @@ export const actions = {
       try {
         const token = parsed.token;
         commit('auth/setToken', token);
-
         const { data } = await rf.getBehaviors('UserBehavior', $axios).getCurrentUser();
         console.log(data, "data_________-");
         commit('fetchUser', data);

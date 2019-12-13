@@ -129,7 +129,7 @@
           window.Echo.connector.options.auth.headers['Authorization'] = this.getToken;
           this.listenChatConversation(this.getConversationId);
       } else {
-        window.Echo.leave(`${this.innerPrefix()}${id}`);
+        window.Echo.leave(`${this.innerPrefix()}${this.getConversationId}`);
       }
     },
     methods: {
